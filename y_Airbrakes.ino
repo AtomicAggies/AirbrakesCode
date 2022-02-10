@@ -6,7 +6,7 @@ int16_t gx, gy, gz;
 
 void setup() {
   // ========== Setup Begin ========== //
-  Serial.begin(9600);
+  Serial.begin(115200);
   // Wait for serial connection to complete.
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
@@ -36,6 +36,7 @@ void setup() {
     Serial.print("Intializing SD card...");
   if (verboseLevel > 0 && SD_Startup())
     Serial.println("DONE!");
+  /*
   else {
     Serial.println("FAILED!");
     // Display the failure and sound the buzzer
@@ -46,6 +47,7 @@ void setup() {
       delay(200);
     }
   }
+  */
   // Initialize the Servos
   if (verboseLevel > 0)
     Serial.print("Initializing servos...");
@@ -64,6 +66,13 @@ void setup() {
   if (verboseLevel > 0)
     Serial.print("Gathering initial pressure...");
   if (verboseLevel > 0 && Barometric_Sensor_Startup())
+    Serial.println("DONE!");
+  else
+    Serial.println("FAILED!");
+  // Initialize the WiFi
+  if (verboseLevel > 0)
+    Serial.print("Setting up WiFi and ESP NOW...");
+  if (verboseLevel > 0 && WiFi_Startup())
     Serial.println("DONE!");
   else
     Serial.println("FAILED!");
@@ -139,7 +148,9 @@ void loop() {
     }
   }
   // Log data on the SD card
-  String dataString = "Gyro: " + String(estimated_gyrox - uprightX) + ", " + String(estimated_gyroz - uprightZ) + "; Absolute Pressure: " + String(absolutePressure);
+  String dataStringString = "Gyro: " + String(estimated_gyrox - uprightX) + ", " + String(estimated_gyroz - uprightZ) + "; Absolute Pressure: " + String(absolutePressure);
+  char dataString[dataStringString.length()];
+  dataStringString.toCharArray(dataString, dataStringString.length());
   SD_Write(dataString);
   // ========== Loop End ========== //
 }

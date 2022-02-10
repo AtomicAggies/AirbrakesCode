@@ -9,9 +9,19 @@
 #include <heltec.h>
 #include <SPI.h>
 #include <SD.h>
+#include <esp_now.h>
+#include <WiFi.h>
 
 // ========== Can Change ========== //
 // Change these variables to influence program parameters
+
+// Pins for the SD card
+// Note that these must be different than
+// the SPI pins already in use by the LoRa.
+#define SD_CS 2
+#define SD_SCK 17
+#define SD_MOSI 23
+#define SD_MISO 13
 
 // Verbose logging level
 // 0 - no logging
@@ -31,7 +41,7 @@ const int servoClosingValue = 90;
 const int servoPin = 15;
 
 // Buzzer pin
-const int buzzerPin = 13;
+const int buzzerPin = 32;
 
 // SD Chip Select
 // By default this is 18 on the Heltec LoRa 32(V2)
@@ -63,6 +73,11 @@ const float GForceActivation = 8000;
 // Values are from -infinity to infinity measured in millibars
 const float PressureActivation = 160;
 
+// MAC Address of the WiFi reciever
+// This is used for the avionics data sending
+// The MAC address of the black box
+uint8_t broadcastAddress[] = {0x94, 0xB9, 0x7E, 0x5F, 0x3B, 0xEC};
+
 // ========== Do Not Change ========== //
 // Do not change these variables, they are used by the program
 
@@ -72,6 +87,9 @@ MPU6050 accelgyro;
 
 int16_t uprightX, uprightZ;
 bool servosOpened = false;
+
+// WiFi peer information
+esp_now_peer_info_t peerInfo;
 
 // NOTE: depending on wiring the this may need to be either 0x77 or 0x76
 //       see https://forum.arduino.cc/t/need-help-to-connect-ms5611-pressure-sensor-in-i2c-mode/341813

@@ -29,6 +29,8 @@ void Open_Servos() {
   Heltec.display->drawString(0, 0, "Phase: Program loop");
   Heltec.display->drawString(0, 12, "Flaps: Open");
   Heltec.display->display();
+  // Send data to the avionics board over WiFi
+  esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
 }
 
 // Closes the servos based on which are selected
@@ -42,6 +44,8 @@ void Close_Servos() {
   Heltec.display->drawString(0, 0, "Phase: Program loop");
   Heltec.display->drawString(0, 12, "Flaps: Closed");
   Heltec.display->display();
+  // Send data to the avionics board over WiFi
+  esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
 }
 
 void Disable_Servos() {
