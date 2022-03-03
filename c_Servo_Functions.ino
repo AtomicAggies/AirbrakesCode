@@ -6,15 +6,15 @@ bool Servo_Startup() {
   servo.setPeriodHertz(50);
 
   // Attach servos to the correct pin
-  servo.attach(servoPin, minUS, maxUS);
+  servo.attach(SERVO_PIN, minUS, maxUS);
   pwm.attachPin(27, 10000);
 
   // Show that they open and close
-  servo.write(servoClosingValue);
+  servo.write(SERVO_CLOSE);
 
-  servo.write(servoOpeningValue);
+  servo.write(SERVO_OPEN);
   delay(300);
-  servo.write(servoClosingValue);
+  servo.write(SERVO_CLOSE);
 
   return true;
 }
@@ -22,13 +22,8 @@ bool Servo_Startup() {
 // Open the servos based on which servos are selected
 void Open_Servos() {
   // Write the opening value to servos
-  servo.write(servoOpeningValue);
+  servo.write(SERVO_OPEN);
   servosOpened = true;
-  // Display that they are open
-  Heltec.display->clear();
-  Heltec.display->drawString(0, 0, "Phase: Program loop");
-  Heltec.display->drawString(0, 12, "Flaps: Open");
-  Heltec.display->display();
   // Send data to the avionics board over WiFi
   esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
 }
@@ -37,13 +32,8 @@ void Open_Servos() {
 // See the notes above for the values.
 void Close_Servos() {
   // Write the closing value to servos
-  servo.write(servoClosingValue);
+  servo.write(SERVO_CLOSE);
   servosOpened = false;
-  // Display that they are closed
-  Heltec.display->clear();
-  Heltec.display->drawString(0, 0, "Phase: Program loop");
-  Heltec.display->drawString(0, 12, "Flaps: Closed");
-  Heltec.display->display();
   // Send data to the avionics board over WiFi
   esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
 }

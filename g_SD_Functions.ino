@@ -1,6 +1,8 @@
 // SD_Functions
 // by Preston Hager
 
+/*
+
 bool SD_Startup() {
   // Setup the SD SPI class
   pinMode(SD_CS, OUTPUT);
@@ -12,6 +14,20 @@ bool SD_Startup() {
 }
 
 void SD_Write(char dataString[]) {
+
+  if(!SD_Init){
+    // Setup the SD SPI class
+    pinMode(SD_CS, OUTPUT);
+    SPIClass sd_spi(HSPI);
+    sd_spi.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
+    if (!SD.begin(SD_CS, sd_spi)) {
+      Serial.println("SD init failed");
+    } else {
+      Serial.println("SD Initialized");
+      SD_Init = true;
+    }
+  }
+
   // Calculate the current time since start
   unsigned long nowMillis = millis();
   unsigned long seconds = nowMillis % 1000;
@@ -24,12 +40,14 @@ void SD_Write(char dataString[]) {
   timeStringString.toCharArray(timeString, timeStringString.length());
   // Create the data file variable
   File dataFile = SD.open("/datalog.txt", FILE_WRITE);
+  Serial.println(dataFile);
   if (dataFile) {
     // Print the time stamp to the file
     unsigned int c = 0;
-    while (timeString[c] != 0) {
-      dataFile.write(timeString[c]);
-    }
+//    while (timeString[c] != 0) {
+//      dataFile.write(timeString[c]);
+//      c += 1;
+//    }
 //    dataFile.write(hours);
 //    dataFile.write(":");
 //    dataFile.write(String(minutes));
@@ -42,12 +60,19 @@ void SD_Write(char dataString[]) {
     c = 0;
     while (dataString[c] != 0) {
       dataFile.write(dataString[c]);
+      c += 1;
     }
     Serial.print("Logged data to file: ");
     Serial.println(dataString);
   } else {
     Serial.println("Failed to open file");
   }
+  
+  Serial.println("here");
   // And close the file
   dataFile.close();
+  
+  Serial.println("here2");
 }
+
+*/

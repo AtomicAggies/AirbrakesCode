@@ -25,11 +25,6 @@ bool Barometric_Sensor_Startup() {
 }
 
 float Barometric_Sensor_Current_Abs() {
-  int status = ms5611.read();
-  Serial.print(MS5611_READ_OK);
-  Serial.print(" == ");
-  Serial.println(status);
-  Serial.print("Last read: ");
-  Serial.println(ms5611.lastRead());
+  ms5611.read();
   return ms5611.getPressure();
 }
