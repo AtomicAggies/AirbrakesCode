@@ -6,8 +6,8 @@
 #include "MPU6050.h"
 #include "I2Cdev.h"
 #include "SimpleKalmanFilter.h"
-#include <SPI.h>
-#include <SD.h>
+//#include <SPI.h>
+//#include <SD.h>
 #include <esp_now.h>
 #include <WiFi.h>
 
@@ -92,7 +92,7 @@ esp_now_peer_info_t peerInfo;
 
 // NOTE: depending on wiring the this may need to be either 0x77 or 0x76
 //       see https://forum.arduino.cc/t/need-help-to-connect-ms5611-pressure-sensor-in-i2c-mode/341813
-MS5611 ms5611 = MS5611(0x77);
+MS5611 ms5611 = MS5611(0x76);
 double referencePressure;
 
 // SimpleKalmanFilter(e_mea, e_est, q);

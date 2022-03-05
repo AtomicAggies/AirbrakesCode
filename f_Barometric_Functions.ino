@@ -10,7 +10,8 @@ bool Barometric_Sensor_Startup() {
     Serial.println("Could not find a valid MS5611 sensor, check wiring!");
     delay(500);
     // If the sensor did setup, return false
-    return false;
+    if (i == 9)
+      return false;
   }
 
   // Get a reference pressure for relative altitude readings.

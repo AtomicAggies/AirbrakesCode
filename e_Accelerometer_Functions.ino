@@ -1,6 +1,8 @@
 // Accelerometer_Functions
 // by Preston Hager
 
+/*
+
 bool Accelerometer_Startup() {
   // If the IC2 arduino doesn't have fast wire, start it ourselves
   #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
@@ -16,3 +18,5 @@ bool Accelerometer_Startup() {
 
   return true;
 }
+
+*/
