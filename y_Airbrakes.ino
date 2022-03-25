@@ -12,10 +12,10 @@ void setup() {
   if (verboseLevel > 0)
     Serial.println("Program started. Setup starting.");
   // Allocate all timers
-  ESP32PWM::allocateTimer(0);
-  ESP32PWM::allocateTimer(1);
-  ESP32PWM::allocateTimer(2);
-  ESP32PWM::allocateTimer(3);
+//  ESP32PWM::allocateTimer(0);
+//  ESP32PWM::allocateTimer(1);
+//  ESP32PWM::allocateTimer(2);
+//  ESP32PWM::allocateTimer(3);
   // Initialize the buzzer
   if (verboseLevel > 0)
     Serial.print("Initializing buzzer...");
@@ -67,12 +67,12 @@ void setup() {
   else
     Serial.println("FAILED!");
   // Initialize the WiFi
-  if (verboseLevel > 0)
-    Serial.print("Setting up WiFi and ESP NOW...");
-  if (verboseLevel > 0 && WiFi_Startup())
-    Serial.println("DONE!");
-  else
-    Serial.println("FAILED!");
+//  if (verboseLevel > 0)
+//    Serial.print("Setting up WiFi and ESP NOW...");
+//  if (verboseLevel > 0 && WiFi_Startup())
+//    Serial.println("DONE!");
+//  else
+//    Serial.println("FAILED!");
   // Show setup complete.
   if (verboseLevel > 0)
     Serial.println("Setup complete!");
@@ -112,7 +112,9 @@ void loop() {
   if (absolutePressure <= PRESSURE_ACTIVATION) {
     Open_Servos();
     //    SD_Write("Opened servos");
-  }
+  } //else {
+//    Close_Servos();
+//  }
   // Test for the rocket being turned, then close the servos if tilted.
 //  if (!(estimated_gyrox >= uprightX - TiltThreshold && estimated_gyrox <= uprightX + TiltThreshold) || !(estimated_gyroz >= uprightZ - TiltThreshold && estimated_gyroz <= uprightZ + TiltThreshold)) {
 //    Close_Servos();

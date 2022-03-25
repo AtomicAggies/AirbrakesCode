@@ -1,6 +1,8 @@
 // WiFi_Funcitons
 // by Preston Hager
 
+/*
+
 bool WiFi_Startup() {
   WiFi.mode(WIFI_STA);
   if (esp_now_init() != ESP_OK) {
@@ -16,3 +18,5 @@ bool WiFi_Startup() {
   }
   return true;
 }
+
+*/

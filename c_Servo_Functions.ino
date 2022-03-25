@@ -3,17 +3,18 @@
 
 bool Servo_Startup() {
   // Set servos to operate at 50Hz (standard)
-  servo.setPeriodHertz(50);
+//  servo.setPeriodHertz(50);
 
   // Attach servos to the correct pin
   servo.attach(SERVO_PIN, minUS, maxUS);
-  pwm.attachPin(27, 10000);
+//  pwm.attachPin(27, 10000);
 
   // Show that they open and close
   servo.write(SERVO_CLOSE);
+  delay(500);
 
   servo.write(SERVO_OPEN);
-  delay(300);
+  delay(750);
   servo.write(SERVO_CLOSE);
 
   return true;
@@ -25,7 +26,7 @@ void Open_Servos() {
   servo.write(SERVO_OPEN);
   servosOpened = true;
   // Send data to the avionics board over WiFi
-  esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
+//  esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
 }
 
 // Closes the servos based on which are selected
@@ -35,11 +36,11 @@ void Close_Servos() {
   servo.write(SERVO_CLOSE);
   servosOpened = false;
   // Send data to the avionics board over WiFi
-  esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
+//  esp_now_send(broadcastAddress, (uint8_t *) &servosOpened, sizeof(servosOpened));
 }
 
 void Disable_Servos() {
   // Detach servos
   servo.detach();
-  pwm.detachPin(27);
+//  pwm.detachPin(27);
 }
