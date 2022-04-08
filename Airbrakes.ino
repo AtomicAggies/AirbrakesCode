@@ -38,8 +38,8 @@ const int verboseLevel = 3;
 // NOTE: values may need to be refined
 //const int servoOpeningValue = 0;
 //const int servoClosingValue = 90;
-#define SERVO_OPEN  0
-#define SERVO_CLOSE 100
+#define SERVO_OPEN  38
+#define SERVO_CLOSE 110
 
 // Servo pin on the board
 // Recommended pins are 2, 4, 15-18, 21-23, 25-27, 32-33
@@ -64,7 +64,7 @@ const int maxUS = 2000;
 // Pressure activation value
 // Values are from -infinity to infinity measured in millibars
 //const float PressureActivation = 160;
-#define PRESSURE_ACTIVATION   880
+#define PRESSURE_ACTIVATION   870
 
 // Tilt Threshold
 // When to close the flaps, after the rocket has tilted over on the x/z axis
