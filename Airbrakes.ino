@@ -1,8 +1,8 @@
 // Global_Variables
 // by Preston Hager
 
-//#include "ESP32Servo.h"
-#include <Servo.h>
+#include "ESP32Servo.h"
+//#include <Servo.h>
 #include "MS5611.h"
 #include "MPU6050.h"
 #include "I2Cdev.h"
@@ -44,7 +44,7 @@ const int verboseLevel = 3;
 // Servo pin on the board
 // Recommended pins are 2, 4, 15-18, 21-23, 25-27, 32-33
 //const int servoPin = 15;
-#define SERVO_PIN   9
+#define SERVO_PIN   15
 
 // Buzzer pin
 const int buzzerPin = 12;
@@ -64,7 +64,7 @@ const int maxUS = 2000;
 // Pressure activation value
 // Values are from -infinity to infinity measured in millibars
 //const float PressureActivation = 160;
-#define PRESSURE_ACTIVATION   846.62
+#define PRESSURE_ACTIVATION   880
 
 // Tilt Threshold
 // When to close the flaps, after the rocket has tilted over on the x/z axis
@@ -82,7 +82,7 @@ uint8_t broadcastAddress[] = {0x94, 0xB9, 0x7E, 0x5F, 0x3B, 0xEC};
 // Do not change these variables, they are used by the program
 
 Servo servo;
-//ESP32PWM pwm;
+ESP32PWM pwm;
 MPU6050 accelgyro;
 
 int16_t uprightX, uprightZ;

@@ -12,10 +12,10 @@ void setup() {
   if (verboseLevel > 0)
     Serial.println("Program started. Setup starting.");
   // Allocate all timers
-//  ESP32PWM::allocateTimer(0);
-//  ESP32PWM::allocateTimer(1);
-//  ESP32PWM::allocateTimer(2);
-//  ESP32PWM::allocateTimer(3);
+  ESP32PWM::allocateTimer(0);
+  ESP32PWM::allocateTimer(1);
+  ESP32PWM::allocateTimer(2);
+  ESP32PWM::allocateTimer(3);
   // Initialize the buzzer
   if (verboseLevel > 0)
     Serial.print("Initializing buzzer...");
