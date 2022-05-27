@@ -10,10 +10,18 @@
 //#include <SPI.h>
 //#include <SD.h>
 //#include <esp_now.h>
-//#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFi.h>
+#include <WebServer.h>
+
 
 // ========== Can Change ========== //
 // Change these variables to influence program parameters
+
+// Network Access Point SSID and Password
+// Note: both must be at least 8 characters to work correctly.
+const char* ssid = "ESP32 Access";
+const char* password = "networkpass";
 
 // Pins for the SD card
 // Note that these must be different than
@@ -102,6 +110,10 @@ double referencePressure;
 // q: Process Noise
 SimpleKalmanFilter gyroKalmanFilter(1, 1, 1);
 SimpleKalmanFilter accelKalmanFilter(1, 1, .001);
+
+WebServer server(80);
+float currentSeaLevel = 1000.0;
+int activationAltitude = 2000;
 
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
   #include "Wire.h"

@@ -29,3 +29,7 @@ float Barometric_Sensor_Current_Abs() {
   ms5611.read();
   return ms5611.getPressure();
 }
+
+int Pressure_To_Altitude(float pressure) {
+  return -44330.7692308 * (pow((pressure / currentSeaLevel), (0.1902632365)) - 1);
+}
