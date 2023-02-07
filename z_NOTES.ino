@@ -36,3 +36,15 @@ https://github.com/Heltec-Aaron-Lee/WiFi_Kit_series/releases/download/0.0.5/pack
  * 
  * ================================
  */
+
+/* ================================
+ *  Update: 25 January 2023
+ *  
+ *  Rewriting the code to act like
+ *  an altimeter. We now read while
+ *  on the pad to create a buffer
+ *  of pressures and temperatures.
+ *  It then detects when the rocket
+ *  launches to start the main
+ *  loop and watch for when to deploy.
+ */

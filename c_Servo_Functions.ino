@@ -3,11 +3,11 @@
 
 bool Servo_Startup() {
   // Set servos to operate at 50Hz (standard)
-  servo.setPeriodHertz(50);
+//  servo.setPeriodHertz(50);
 
   // Attach servos to the correct pin
   servo.attach(SERVO_PIN, minUS, maxUS);
-  pwm.attachPin(27, 10000);
+//  pwm.attachPin(27, 10000);
 
   // Show that they open and close
   servo.write(SERVO_CLOSE);
@@ -42,5 +42,4 @@ void Close_Servos() {
 void Disable_Servos() {
   // Detach servos
   servo.detach();
-  pwm.detachPin(27);
 }

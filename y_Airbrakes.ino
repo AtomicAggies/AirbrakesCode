@@ -11,16 +11,11 @@ void setup() {
   delay(250);
   if (verboseLevel > 0)
     Serial.println("Program started. Setup starting.");
-  // Allocate all timers
-  ESP32PWM::allocateTimer(0);
-  ESP32PWM::allocateTimer(1);
-  ESP32PWM::allocateTimer(2);
-  ESP32PWM::allocateTimer(3);
   // Initialize WiFi AP and Web Server
   if (verboseLevel > 0)
     Serial.print("Initializing Web Server...");
-  if (verboseLevel > 0 && WebServer_Setup())
-    Serial.println("DONE!");
+//  if (verboseLevel > 0 && WebServer_Setup())
+//    Serial.println("DONE!");
   else
     Serial.println("FAILED!");
   // Initialize the buzzer
@@ -49,7 +44,7 @@ void setup() {
   // Initialize the WiFi
   // If the verbose level is set to zero, we just preform all setup without checking anything
   if (verboseLevel == 0) {
-    WebServer_Setup();
+//    WebServer_Setup();
     Buzzer_Startup();
     Servo_Startup();
     Barometric_Sensor_Startup();
@@ -64,10 +59,10 @@ void setup() {
 void loop() {
   // ========== Loop Start ========== //
   // Check for server connections
-  server.handleClient();
+//  server.handleClient();
   // Gather data from the barometer for later actions.
   float absolutePressure = Barometric_Sensor_Current_Abs();
-  int altitude = Pressure_To_Altitude(860);
+  int altitude = 860; //TODO: fix
   if (verboseLevel > 2) {
     Serial.print("Absolute Pressure: ");
     Serial.println(String(absolutePressure));

@@ -1,27 +1,20 @@
 // Global_Variables
 // by Preston Hager
 
-#include "ESP32Servo.h"
-//#include <Servo.h>
+//#include "ESP32Servo.h"
+#include <Servo.h>
 #include "MS5611.h"
-#include "MPU6050.h"
+//#include "MPU6050.h"
 #include "I2Cdev.h"
+#include <pressure.h>
 #include "SimpleKalmanFilter.h"
 //#include <SPI.h>
 //#include <SD.h>
 //#include <esp_now.h>
-#include <ESPmDNS.h>
 #include <WiFi.h>
-#include <WebServer.h>
-
 
 // ========== Can Change ========== //
 // Change these variables to influence program parameters
-
-// Network Access Point SSID and Password
-// Note: both must be at least 8 characters to work correctly.
-const char* ssid = "ESP32 Access";
-const char* password = "networkpass";
 
 // Pins for the SD card
 // Note that these must be different than
@@ -38,8 +31,8 @@ bool SD_Init = false;
 // 1 - info logging only
 // 2 - debug logging
 // 3 - all logging
-const int verboseLevel = 3;
-#define VERBOSE_LEVEL 3
+const int verboseLevel = 2;
+#define VERBOSE_LEVEL 2
 
 // Servo opening and closing values
 // These can be from -90 to 90
@@ -72,7 +65,13 @@ const int maxUS = 2000;
 // Pressure activation value
 // Values are from -infinity to infinity measured in millibars
 //const float PressureActivation = 160;
-#define PRESSURE_ACTIVATION   870
+//#define PRESSURE_ACTIVATION   694
+
+// Now we use altitude activation
+// Values are from 0 to infinity measured in meters
+// TODO: Set in the GUI
+//#define ALTITUDE_ACTIVATION   6300
+uint16_t activationAltitude = 0;
 
 // Tilt Threshold
 // When to close the flaps, after the rocket has tilted over on the x/z axis
@@ -90,19 +89,22 @@ uint8_t broadcastAddress[] = {0x94, 0xB9, 0x7E, 0x5F, 0x3B, 0xEC};
 // Do not change these variables, they are used by the program
 
 Servo servo;
-ESP32PWM pwm;
-MPU6050 accelgyro;
 
-int16_t uprightX, uprightZ;
 bool servosOpened = false;
-
-// WiFi peer information
-//esp_now_peer_info_t peerInfo;
 
 // NOTE: depending on wiring the this may need to be either 0x77 or 0x76
 //       see https://forum.arduino.cc/t/need-help-to-connect-ms5611-pressure-sensor-in-i2c-mode/341813
 MS5611 ms5611 = MS5611(0x77);
 double referencePressure;
+// A buffer of measured pressure/temperature while rocket is on the pad
+pressure measuredPressures[4];
+float measuredTemperatures[4];
+// Where are we in the buffer, this increases on each read.
+// We also get the current pad pressure via the average of the three not including the last index.
+uint8_t measuredIndex = 0;
+// The average pad pressure/temperature, used for calculating current altitude.
+pressure padPressure;
+float padTemperature;
 
 // SimpleKalmanFilter(e_mea, e_est, q);
 // e_mea: Measurement Uncertainty
@@ -110,10 +112,6 @@ double referencePressure;
 // q: Process Noise
 SimpleKalmanFilter gyroKalmanFilter(1, 1, 1);
 SimpleKalmanFilter accelKalmanFilter(1, 1, .001);
-
-WebServer server(80);
-float currentSeaLevel = 1000.0;
-int activationAltitude = 2000;
 
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
   #include "Wire.h"
