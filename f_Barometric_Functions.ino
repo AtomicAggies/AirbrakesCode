@@ -29,13 +29,13 @@ bool Barometric_Sensor_Startup() {
 void Barometric_Sensor_Read() {
   // Read the current pressure and put it in the buffer
   ms5611.read();
-  measuredPressures[measuredIndex].setMilliBar(ms5611.getPressure());
-  measuredTemperatures[measuredIndex] = ms5611.getTemperature();
+  measuredPressures[measuredPressuresIndex].setMilliBar(ms5611.getPressure());
+  measuredTemperatures[measuredTemperaturesIndex] = ms5611.getTemperature();
   // Find the average of the recorded pressures, not including the current index.
   float pressureSum = 0.0f;
   float temperatureSum = 0.0f;
   for (uint8_t i=0; i<4; i++) {
-    if (i != measuredIndex) { // Skip over the last read value.
+    if (i != measuredPressuresIndex) { // Skip over the last read value.
       pressureSum += measuredPressures[i].getMilliBar();
       temperatureSum += measuredTemperatures[i];
     }
@@ -44,6 +44,12 @@ void Barometric_Sensor_Read() {
   padTemperature = temperatureSum / 3.0;
   // Increase where we are in the buffer for next time.
   measuredPressuresIndex ++;
+  measuredTemperaturesIndex ++;
+  // Loop around if we have reached the end of the array.
+  if (measuredPressuresIndex == 4) {
+    measuredPressuresIndex = 0;
+    measuredTemperaturesIndex = 0;
+  }
 }
 
 float Barometric_Sensor_Current_Abs() {
@@ -56,7 +62,3 @@ float Barometric_Get_Altitude() {
   pressure currentPressure = pressure(ms5611.getPressure());
   return (padTemperature/-0.0065) * (pow((currentPressure.getPascal()/padPressure.getPascal()), ((8.31432*0.0065)/(9.80665* 0.0289644)))-1);
 }
-
-//int Pressure_To_Altitude(float pressure) {
-//  return -44330.7692308 * (pow((pressure / currentSeaLevel), (0.1902632365)) - 1);
-//}
