@@ -1,5 +1,4 @@
 // Buzzer_Functions
-// by Preston Hager
 
 bool Buzzer_Startup() {
   // Set the buzzer pin to output

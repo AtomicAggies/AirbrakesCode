@@ -1,19 +1,20 @@
 // Servo_Funcitons
-// by Preston Hager
 
 bool Servo_Startup() {
   // Attach servo to the correct pin
   servo.attach(SERVO_PIN, minUS, maxUS);
 
-  // Show that they open and close
+  return true;
+}
+
+// Open and close the servos to test
+void Servo_Test() {
   servo.write(SERVO_CLOSE);
   delay(500);
 
   servo.write(SERVO_OPEN);
-  delay(750);
+  delay(1500);
   servo.write(SERVO_CLOSE);
-
-  return true;
 }
 
 // Open the servos based on which servos are selected

@@ -1,5 +1,4 @@
 // Airbrakes ESP32
-// by Preston Hager
 
 void setup() {
   // ========== Setup Begin ========== //
@@ -11,6 +10,12 @@ void setup() {
     }
     delay(250);
     Serial.println("Program started. Setup starting.");
+    Serial.print("Initializing SD Reader...");
+    if (SD_Setup()) {
+      Serial.println("DONE!");
+    } else {
+      Serial.println("FAILED!");
+    }
     Serial.print("Initializing Web Server...");
     if (WebServer_Setup()) {
       Serial.println("DONE!");
@@ -37,6 +42,7 @@ void setup() {
     }
     Serial.println("Setup complete!");
   } else {
+    SD_Setup();
     WebServer_Setup();
     Buzzer_Startup();
     Servo_Startup();
@@ -56,6 +62,7 @@ void loop() {
       Serial.print("Updated pad pressure. Measured at: ");
       float measuredPressure = measuredPressures[measuredPressuresIndex].getMilliBar();
       Serial.println(measuredPressure);
+      dataLogFile.println(String(millis())+",1,"+String(measuredPressure)+",0");
     }
     // Look for a launch
     // currentPressure is measured in millibars
@@ -63,10 +70,11 @@ void loop() {
     // If the current pressure is significatly lower than the pad pressure,
     // then the rocket is flying!
     if (padPressure.getMilliBar() > (currentPressure + SENSITIVITY)) {
-      #if VERBOSE > 0
+      #if VERBOSE_LEVEL > 0
         Serial.println("Launch detected!");
       #endif
       flightMode = 2;
+      dataLogFile.println(String(millis())+",2,"+String(currentPressure)+",0");
     }
     // Handle web connections
     server.handleClient();
@@ -75,19 +83,23 @@ void loop() {
   } else if (flightMode == 2) {
     // Look for the activation altitude and open the servos
     float altitude = Barometric_Get_Altitude();
-    #if VERBOSE > 0
+    #if VERBOSE_LEVEL > 0
       Serial.print("Altitude: ");
       Serial.println(altitude);
     #endif
+    dataLogFile.println(String(millis())+",2,0,"+String(altitude));
     if (altitude >= activationAltitude) {
       Open_Servos();
-      #if VERBOSE > 0
+      #if VERBOSE_LEVEL > 0
         Serial.println("Airbrakes deployed!");
       #endif
       flightMode = 3;
+      dataLogFile.println(String(millis())+",3,0,"+String(altitude));
     }
   } else {
     // Fins have been extended
   }
+  // flush any data in the sd card to ensure it writes
+  dataLogFile.flush();
   // ========== Loop End ========== //
 }

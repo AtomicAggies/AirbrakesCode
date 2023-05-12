@@ -1,5 +1,4 @@
 // Altimeter_Functions
-// by Preston Hager
 
 bool Barometric_Sensor_Startup() {
   // Try to setup the altimeter.

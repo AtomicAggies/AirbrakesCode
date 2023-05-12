@@ -1,5 +1,4 @@
 // Global_Variables
-// by Preston Hager
 
 #include <ESP32Servo.h>
 #include "MS5611.h"
@@ -7,7 +6,7 @@
 #include <pressure.h>
 #include "SimpleKalmanFilter.h"
 //#include <SPI.h>
-//#include <SD.h>
+#include <SD.h>
 //#include <esp_now.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
@@ -21,24 +20,27 @@
 // 1 - info logging only
 // 2 - debug logging
 // 3 - all logging
-const int verboseLevel = 2;
-#define VERBOSE_LEVEL 2
+const int verboseLevel = 3;
+#define VERBOSE_LEVEL 3
 
 // Servo opening and closing values
 // These can be from -90 to 90
 // NOTE: values may need to be refined
 //const int servoOpeningValue = 0;
 //const int servoClosingValue = 90;
-#define SERVO_OPEN  38
-#define SERVO_CLOSE 110
+#define SERVO_OPEN  90
+#define SERVO_CLOSE 180
 
 // Servo pin on the board
 // Recommended pins are 2, 4, 15-18, 21-23, 25-27, 32-33
-//const int servoPin = 15;
+//const int servoPin = 15;x
 #define SERVO_PIN   15
 
 // Buzzer pin
 const int buzzerPin = 12;
+
+// SD Card Reader CS pin
+#define SD_CARD_CS  4
 
 // Servo movment speed
 // Values between 0 and 2000
@@ -50,12 +52,12 @@ const int maxUS = 2000;
 // Values are from 0 to infinity measured in meters
 // TODO: Set in the GUI
 //#define ALTITUDE_ACTIVATION   6300
-uint16_t activationAltitude = 6300;
+uint16_t activationAltitude = 5088;
 
 // Sensitivity number which is how much pressure
 // change needs to happen for a launch to be detected
 // Recommended values between 10 and 100 millibars
-#define SENSITIVITY   25
+#define SENSITIVITY   10
 
 // Wifi access point for accessing the ESP32 from the ground
 // Note: both must be at least 8 characters to work correctly.
@@ -81,6 +83,8 @@ IPAddress local_IP(192, 168, 1, 105);
 // Set your Gateway IP address
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
+
+File dataLogFile;
 
 // NOTE: depending on wiring the this may need to be either 0x77 or 0x76
 //       see https://forum.arduino.cc/t/need-help-to-connect-ms5611-pressure-sensor-in-i2c-mode/341813
