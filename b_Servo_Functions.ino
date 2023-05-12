@@ -2,7 +2,7 @@
 
 bool Servo_Startup() {
   // Attach servo to the correct pin
-  servo.attach(SERVO_PIN, minUS, maxUS);
+  servo.attach(SERVO_PIN, MIN_US, MAX_US);
 
   return true;
 }
