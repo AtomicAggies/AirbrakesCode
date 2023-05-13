@@ -25,7 +25,9 @@
 // Same as verbos level but only used for the SD card
 #define SD_LEVEL      3
 
-// Ascent and Descent sample rates
+// Sample rates for before and after the
+// airbrakes are deployed. Ascent is after launch is
+// detected. Descent is after airbrakes are deployed.
 // Ascent recommended to be 4, 5, 8, 10, 15, 20, 25, or 33
 // Descent recommended to be 1, 2, 4, 5, or 10
 // To calculate ascent, take average thrust to weight ratio
@@ -34,24 +36,30 @@
 #define ASCENT_SAMPLE_RATE    15
 #define DESCENT_SAMPLE_RATE   2
 
+// Launch Detection Altitude
+// How far the rocket needs to travel upwards before
+// a flight is counted as "launched".
+// Recommended values between 50-500 feet.
+#define LAUNCH_DETECTION      150
+
 // Servo opening and closing values
 // These can be from -90 to 90
 // NOTE: values may need to be refined
 //const int servoOpeningValue = 0;
 //const int servoClosingValue = 90;
-#define SERVO_OPEN    90
-#define SERVO_CLOSE   180
+#define SERVO_OPEN    0
+#define SERVO_CLOSE   10
 
 // Servo pin on the board
 // Recommended pins are 2, 4, 15-18, 21-23, 25-27, 32-33
 //const int servoPin = 15;x
-#define SERVO_PIN     15
+#define SERVO_PIN     9
 
 // Buzzer pin
-const byte buzzerPin = 12;
+#define BUZZER_PIN    8
 
 // SD Card Reader CS pin
-#define SD_CARD_CS    4
+#define SD_CARD_CS    10
 
 // Servo movment speed
 // Values between 0 and 2000
@@ -61,12 +69,7 @@ const byte buzzerPin = 12;
 
 // Now we use altitude activation
 // Values are from 0 to infinity measured in meters
-uint16_t activationAltitude = 5088;
-
-// Sensitivity number which is how much pressure
-// change needs to happen for a launch to be detected
-// Recommended values between 10 and 100 millibars
-#define SENSITIVITY   10
+uint16_t activationAltitude = 1500;
 
 // Wifi access point for accessing the ESP32 from the ground
 // Note: both must be at least 8 characters to work correctly.
@@ -127,5 +130,5 @@ unsigned int flightMode = 0;
 //SimpleKalmanFilter accelKalmanFilter(1, 1, .001);
 
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-  #include "Wire.h"
+#include "Wire.h"
 #endif

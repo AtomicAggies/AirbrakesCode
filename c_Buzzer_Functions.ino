@@ -2,18 +2,18 @@
 
 bool Buzzer_Startup() {
   // Set the buzzer pin to output
-  pinMode(buzzerPin, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
 
   // Test the buzzer
-  tone(buzzerPin, 440.00);
+  tone(BUZZER_PIN, 440.00);
   delay(300);
-  noTone(buzzerPin);
+  noTone(BUZZER_PIN);
   
   return true;
 }
 
 void Buzzer_Alert(float freq, int delayTime=300) {
-  tone(buzzerPin, freq);
+  tone(BUZZER_PIN, freq);
   delay(delayTime);
-  noTone(buzzerPin);
+  noTone(BUZZER_PIN);
 }
