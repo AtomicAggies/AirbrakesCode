@@ -40,15 +40,15 @@
 // How far the rocket needs to travel upwards before
 // a flight is counted as "launched".
 // Recommended values between 50-500 feet.
-#define LAUNCH_DETECTION      150
+#define LAUNCH_DETECTION      100
 
 // Servo opening and closing values
 // These can be from -90 to 90
 // NOTE: values may need to be refined
 //const int servoOpeningValue = 0;
 //const int servoClosingValue = 90;
-#define SERVO_OPEN    0
-#define SERVO_CLOSE   10
+#define SERVO_OPEN    65
+#define SERVO_CLOSE   120
 
 // Servo pin on the board
 // Recommended pins are 2, 4, 15-18, 21-23, 25-27, 32-33
@@ -69,7 +69,7 @@
 
 // Now we use altitude activation
 // Values are from 0 to infinity measured in meters
-uint16_t activationAltitude = 1500;
+uint16_t activationAltitude = 9950;
 
 // Wifi access point for accessing the ESP32 from the ground
 // Note: both must be at least 8 characters to work correctly.
